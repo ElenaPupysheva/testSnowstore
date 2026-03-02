@@ -1,7 +1,7 @@
 package com.alonso.testsnowstore.data
 
 data class ShopItem(
-    val id: Int,
+    val id: String,
     val model: String,
     val description: String,
     val features: String,

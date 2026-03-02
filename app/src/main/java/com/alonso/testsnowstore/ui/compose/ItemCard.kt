@@ -1,5 +1,6 @@
 package com.alonso.testsnowstore.ui.compose
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,14 +24,15 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ItemCard(shopItem: ShopItem) {
+fun ItemCard(shopItem: ShopItem, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 vertical = PaddingSmall,
                 horizontal = PaddingSmall
-            ),
+            )
+            .clickable { },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
