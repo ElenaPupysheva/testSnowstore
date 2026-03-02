@@ -1,4 +1,4 @@
-package com.alonso.testsnowstore
+package com.alonso.testsnowstore.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
