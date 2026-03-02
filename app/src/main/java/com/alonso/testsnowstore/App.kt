@@ -1,0 +1,66 @@
+package com.alonso.testsnowstore
+
+import android.app.Application
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
+import com.alonso.testsnowstore.data.SHOPITEM_PREFERENCES
+import com.alonso.testsnowstore.data.SWITCH_KEY
+import com.alonso.testsnowstore.di.networkModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
+
+class App : Application() {
+
+    private lateinit var themePrefs: SharedPreferences
+    var darkTheme = false
+    override fun onCreate() {
+        super.onCreate()
+        themePrefs = getSharedPreferences(SHOPITEM_PREFERENCES, MODE_PRIVATE)
+
+        startKoin {
+            androidContext(this@App)
+            modules(
+                listOf(
+                    networkModule,
+                )
+            )
+        }
+
+        if (!themePrefs.contains(SWITCH_KEY)) {
+            val isSystemDarkTheme =
+                (resources.configuration.uiMode and
+                        android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                        android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+            themePrefs.edit()
+                .putBoolean(SWITCH_KEY, isSystemDarkTheme)
+                .apply()
+        }
+
+        darkTheme = themePrefs.getBoolean(SWITCH_KEY, false)
+
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkTheme) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
+
+    fun switchTheme(darkThemeEnabled: Boolean) {
+        darkTheme = darkThemeEnabled
+
+        themePrefs.edit()
+            .putBoolean(SWITCH_KEY, darkTheme)
+            .apply()
+
+        AppCompatDelegate.setDefaultNightMode(
+            if (darkTheme) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
+}
