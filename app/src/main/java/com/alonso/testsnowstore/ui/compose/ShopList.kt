@@ -8,8 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import com.alonso.testsnowstore.data.ShopItem
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun ShopList(
@@ -26,10 +29,20 @@ fun ShopList(
             lastVisibleItemIndex != null && lastVisibleItemIndex >= totalItemsCount - 1
         }
     }
-    LaunchedEffect(shouldLoadNext.value) {
-        if (shouldLoadNext.value) {
-            onLoadNextPage()
+    val preloadThreshold = 3
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            val layoutInfo = listState.layoutInfo
+            val total = layoutInfo.totalItemsCount
+            val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            total > 0 && lastVisible >= total - 1 - preloadThreshold
         }
+            .distinctUntilChanged()
+            .filter { it }
+            .collect {
+                onLoadNextPage()
+            }
     }
 
     LazyColumn(

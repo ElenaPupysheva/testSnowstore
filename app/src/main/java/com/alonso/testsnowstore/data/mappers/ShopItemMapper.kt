@@ -3,7 +3,7 @@ package com.alonso.testsnowstore.data.mappers
 import com.alonso.testsnowstore.data.ShopItem
 import com.alonso.testsnowstore.data.ShopItemDto
 
-fun ShopItemDto.toDomain(): ShopItem = ShopItem(
+fun ShopItemDto.toDomain(isFavorite: Boolean) = ShopItem(
     id = id,
     model = model,
     description = description,
@@ -11,5 +11,6 @@ fun ShopItemDto.toDomain(): ShopItem = ShopItem(
     categories = categories,
     imageUrl = imageUrl,
     price = price,
-    editedAt = editedAt
+    editedAt = editedAt,
+    isFavorite = isFavorite
 )
