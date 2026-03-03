@@ -8,7 +8,7 @@ import com.alonso.testsnowstore.data.db.entity.FavouriteShopItemEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavoriteShopItemDao {
+interface FavouriteShopItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(entity: FavouriteShopItemEntity): Long
 

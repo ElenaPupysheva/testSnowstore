@@ -3,21 +3,27 @@ package com.alonso.testsnowstore.ui.compose
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.alonso.testsnowstore.data.ShopItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.alonso.testsnowstore.presentation.favourite.FavouritesViewModel
 
 @Composable
 fun FavouriteScreen(
-    shopItems: List<ShopItem>,
-    onLoadNextPage: () -> Unit,
-    onItemClick: (ShopItem) -> Unit,
+    navController: NavController,
+    viewModel: FavouritesViewModel,
     modifier: Modifier = Modifier
 ) {
-    Column(Modifier.fillMaxSize()) {
+    val items by viewModel.favoriteItems.collectAsStateWithLifecycle()
+
+    Column(modifier.fillMaxSize()) {
         ShopList(
-            shopItemsList = shopItems,
-            onLoadNextPage = onLoadNextPage,
-            onItemClick = onItemClick
+            shopItemsList = items,
+            onLoadNextPage = { /* обычно не нужно */ },
+            onItemClick = { item ->
+                // navController.navigate("details/${item.id}")
+            }
         )
     }
 }

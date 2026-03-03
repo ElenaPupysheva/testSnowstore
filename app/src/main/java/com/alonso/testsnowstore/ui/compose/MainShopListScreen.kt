@@ -23,24 +23,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
-import com.alonso.testsnowstore.data.ShopItem
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.alonso.testsnowstore.presentation.main.MainShopViewModel
 import com.alonso.testsnowstore.ui.theme.PaddingMedium
 import com.alonso.testsnowstore.ui.theme.SpacerThin
 
 @Composable
 fun MainShopListScreen(
-    shopItems: List<ShopItem>,
-    searchResults: List<String>,
-    textFieldState: TextFieldState,
-    onSearch: (String) -> Unit,
-    onLoadNextPage: () -> Unit,
-    onItemClick: (ShopItem) -> Unit,
+    navController: NavController,
+    viewModel: MainShopViewModel,
     modifier: Modifier = Modifier
 ) {
-    Column(Modifier.fillMaxSize()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
+
+    val textFieldState = viewModel.textFieldState
+
+    Column(modifier.fillMaxSize()) {
         SimpleSearchBar(
             textFieldState = textFieldState,
-            onSearch = onSearch,
+            onSearch = viewModel::onSearch,
             searchResults = searchResults,
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,9 +53,12 @@ fun MainShopListScreen(
         Spacer(Modifier.height(SpacerThin))
 
         ShopList(
-            shopItemsList = shopItems,
-            onLoadNextPage = onLoadNextPage,
-            onItemClick = onItemClick
+            shopItemsList = uiState.items,
+            onLoadNextPage = viewModel::loadNextPage,
+            onItemClick = { item ->
+                // TODO
+                // navController.navigate("details/${item.id}")
+            }
         )
     }
 }

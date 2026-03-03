@@ -15,7 +15,6 @@ class SettingsViewModel(
     init {
         loadThemeState()
     }
-
     private fun loadThemeState() {
         val isEnabled = settingsInteractor.isDarkThemeEnabled()
         _darkThemeEnabled.postValue(isEnabled)

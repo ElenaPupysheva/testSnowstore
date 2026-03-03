@@ -15,7 +15,7 @@ data class FavouriteUiState(
     val favoriteIds: Set<String> = emptySet()
 )
 
-class FavoriteItemsViewModel(
+class FavouritesViewModel(
     private val shopRepository: ShopRepository,
     private val favourites: FavouritesRepository
 ) : ViewModel() {

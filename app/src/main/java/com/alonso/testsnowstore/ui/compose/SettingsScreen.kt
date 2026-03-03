@@ -1,20 +1,16 @@
 package com.alonso.testsnowstore.ui.compose
 
-
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -47,46 +43,36 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
         }
         AppCompatDelegate.setApplicationLocales(locales)
     }
-    Scaffold(
-
-        containerColor = MaterialTheme.colorScheme.background,
-        contentWindowInsets = WindowInsets.systemBars
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            Column {
-                Spacer(Modifier.height(SpacerThin))
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(if (isDarkTheme) "Dark" else "Light")
-                Switch(
-                    checked = isDarkTheme,
-                    onCheckedChange = viewModel::onThemeToggled
-                )
-            }
-
-            Spacer(Modifier.height(24.dp))
-
-            Text("Language", style = MaterialTheme.typography.titleMedium)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
+    ) {
+        Column {
             Spacer(Modifier.height(SpacerThin))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(if (isEnglish) "English" else "Русский")
-                Switch(
-                    checked = isEnglish,
-                    onCheckedChange = viewModel::onLanguageToggled
-                )
-            }
-
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(if (isDarkTheme) "Dark" else "Light")
+            Switch(
+                checked = isDarkTheme,
+                onCheckedChange = viewModel::onThemeToggled
+            )
+        }
+        Spacer(Modifier.height(24.dp))
+        Text("Language", style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(SpacerThin))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(if (isEnglish) "English" else "Русский")
+            Switch(
+                checked = isEnglish,
+                onCheckedChange = viewModel::onLanguageToggled
+            )
         }
     }
 }

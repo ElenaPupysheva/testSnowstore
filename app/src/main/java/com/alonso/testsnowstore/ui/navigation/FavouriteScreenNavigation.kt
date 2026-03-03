@@ -6,16 +6,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.alonso.testsnowstore.domain.BottomNavRoutes
-import com.alonso.testsnowstore.presentation.main.MainShopViewModel
-import com.alonso.testsnowstore.ui.compose.ANIMATION_DELAY
-import com.alonso.testsnowstore.ui.compose.MainShopListScreen
+import com.alonso.testsnowstore.presentation.favourite.FavouritesViewModel
+import com.alonso.testsnowstore.ui.compose.FavouriteScreen
 
-fun NavGraphBuilder.mainScreenNavigation(
+private const val ANIMATION_DELAY = 500
+
+fun NavGraphBuilder.favouriteScreenNavigation(
     navController: NavHostController,
-    viewModel: MainShopViewModel
+    viewModel: FavouritesViewModel
 ) {
     composable(
-        route = BottomNavRoutes.Main.name,
+        route = BottomNavRoutes.Favourites.name,
         enterTransition = {
             val fromRoute = initialState.destination.route
             if (fromRoute != null && BottomNavRoutes.isInEnum(fromRoute)) {
@@ -45,6 +46,9 @@ fun NavGraphBuilder.mainScreenNavigation(
             }
         }
     ) {
-        MainShopListScreen(navController = navController, viewModel = viewModel)
+        FavouriteScreen(
+            navController = navController,
+            viewModel = viewModel
+        )
     }
 }

@@ -12,7 +12,6 @@ class ShopRepositoryImpl(
     private val api: ApiService,
     private val pageSize: Int = 20
 ) : ShopRepository {
-
     private val mutex = Mutex()
     private val _cache = MutableStateFlow<List<ShopItem>>(emptyList())
     private var offset = 0

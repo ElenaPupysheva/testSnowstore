@@ -17,17 +17,13 @@ data class MainShopUiState(
     val isLoading: Boolean = false,
     val error: String? = null
 )
-
 class MainShopViewModel(
     private val repository: ShopRepository
 ) : ViewModel() {
-
     val textFieldState = TextFieldState()
-
     private val query = MutableStateFlow("")
     private val loading = MutableStateFlow(false)
     private val error = MutableStateFlow<String?>(null)
-
     private val itemsFlow = repository.observeItems()
 
     private val filteredItems =
@@ -36,7 +32,6 @@ class MainShopViewModel(
             if (s.isEmpty()) items
             else items.filter { it.model.contains(s, ignoreCase = true) }
         }
-
     val uiState: StateFlow<MainShopUiState> =
         combine(filteredItems, loading, error) { items, isLoading, err ->
             MainShopUiState(items = items, isLoading = isLoading, error = err)
@@ -45,7 +40,6 @@ class MainShopViewModel(
             SharingStarted.WhileSubscribed(5_000),
             MainShopUiState(isLoading = true)
         )
-
     val searchResults: StateFlow<List<String>> =
         combine(itemsFlow, query) { items, q ->
             val s = q.trim()
@@ -61,11 +55,9 @@ class MainShopViewModel(
     init {
         refresh()
     }
-
     fun onSearch(q: String) {
         query.value = q
     }
-
     fun refresh() {
         viewModelScope.launch {
             loading.value = true
@@ -75,7 +67,6 @@ class MainShopViewModel(
             loading.value = false
         }
     }
-
     fun loadNextPage() {
         viewModelScope.launch {
             if (loading.value) return@launch

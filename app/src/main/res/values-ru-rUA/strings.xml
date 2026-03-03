@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">testSnowstore</string>
     <string name="dark_theme">Темная тема</string>
     <string name="language_switch">Переключить язык</string>
+    <string name="main_list">Список товаров</string>
+    <string name="screen_favourites">Избранное</string>
+    <string name="screen_setting">Настройки</string>
 </resources>

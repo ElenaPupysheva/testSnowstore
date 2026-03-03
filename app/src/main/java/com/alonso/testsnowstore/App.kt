@@ -7,10 +7,13 @@ import androidx.core.os.LocaleListCompat
 import com.alonso.testsnowstore.data.ENGLISH_LANGUAGE
 import com.alonso.testsnowstore.data.SHOPITEM_PREFERENCES
 import com.alonso.testsnowstore.data.SWITCH_KEY
+import com.alonso.testsnowstore.di.databaseModule
+import com.alonso.testsnowstore.di.favouriteModule
+import com.alonso.testsnowstore.di.mainModule
 import com.alonso.testsnowstore.di.networkModule
 import com.alonso.testsnowstore.di.settingsModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
@@ -24,13 +27,20 @@ class App : Application() {
 
         startKoin {
             androidContext(this@App)
-            modules(listOf(networkModule, settingsModule))
+            modules(
+                listOf(
+                    networkModule,
+                    mainModule,
+                    databaseModule,
+                    settingsModule,
+                    favouriteModule
+                )
+            )
         }
 
         initThemeIfMissing()
         applySavedTheme()
-
-        applySavedLanguage() // <-- важно
+        applySavedLanguage()
     }
 
     private fun initThemeIfMissing() {

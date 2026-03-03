@@ -3,19 +3,17 @@ package com.alonso.testsnowstore.ui.navigation
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.alonso.testsnowstore.domain.BottomNavRoutes
-import com.alonso.testsnowstore.presentation.main.MainShopViewModel
+import com.alonso.testsnowstore.presentation.settings.SettingsViewModel
 import com.alonso.testsnowstore.ui.compose.ANIMATION_DELAY
-import com.alonso.testsnowstore.ui.compose.MainShopListScreen
+import com.alonso.testsnowstore.ui.compose.SettingsScreen
 
-fun NavGraphBuilder.mainScreenNavigation(
-    navController: NavHostController,
-    viewModel: MainShopViewModel
+fun NavGraphBuilder.settingsScreenNavigation(
+    viewModel: SettingsViewModel
 ) {
     composable(
-        route = BottomNavRoutes.Main.name,
+        route = BottomNavRoutes.Settings.name,
         enterTransition = {
             val fromRoute = initialState.destination.route
             if (fromRoute != null && BottomNavRoutes.isInEnum(fromRoute)) {
@@ -45,6 +43,6 @@ fun NavGraphBuilder.mainScreenNavigation(
             }
         }
     ) {
-        MainShopListScreen(navController = navController, viewModel = viewModel)
+        SettingsScreen(viewModel)
     }
 }

@@ -2,5 +2,8 @@
     <string name="app_name" translatable="false">testSnowstore</string>
     <string name="dark_theme">Dark theme</string>
     <string name="language_switch">Change language</string>
+    <string name="main_list">Products` list</string>
+    <string name="screen_favourites">Favourites</string>
+    <string name="screen_setting">Settings</string>
 
 </resources>

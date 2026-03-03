@@ -16,11 +16,7 @@ val settingsModule = module {
     single<SharedPreferences> {
         androidContext().getSharedPreferences(SHOPITEM_PREFERENCES, Context.MODE_PRIVATE)
     }
-
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
-
     single<SettingsInteractor> { SettingsInteractorImpl(get()) }
-
     viewModel { SettingsViewModel(get()) }
-
 }

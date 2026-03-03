@@ -30,7 +30,6 @@ fun ShopList(
         }
     }
     val preloadThreshold = 3
-
     LaunchedEffect(listState) {
         snapshotFlow {
             val layoutInfo = listState.layoutInfo
@@ -44,7 +43,6 @@ fun ShopList(
                 onLoadNextPage()
             }
     }
-
     LazyColumn(
         Modifier.fillMaxSize(),
         state = listState
