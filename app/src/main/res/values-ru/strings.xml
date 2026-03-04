@@ -12,4 +12,5 @@
     <string name="screen_details">Подробнее</string>
     <string name="back">Назад</string>
     <string name="search">Поиск</string>
+    <string name="filter_all">Отфильтровать все</string>
 </resources>
