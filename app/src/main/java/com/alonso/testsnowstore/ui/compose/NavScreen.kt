@@ -26,6 +26,7 @@ import com.alonso.testsnowstore.domain.BottomNavRoutes
 import com.alonso.testsnowstore.presentation.favourite.FavouritesViewModel
 import com.alonso.testsnowstore.presentation.main.MainShopViewModel
 import com.alonso.testsnowstore.presentation.settings.SettingsViewModel
+import com.alonso.testsnowstore.ui.navigation.detailsScreenNavigation
 import com.alonso.testsnowstore.ui.navigation.favouriteScreenNavigation
 import com.alonso.testsnowstore.ui.navigation.mainScreenNavigation
 import com.alonso.testsnowstore.ui.navigation.settingsScreenNavigation
@@ -118,6 +119,7 @@ fun NavScreen(
             settingsScreenNavigation(
                 viewModel = settingsViewModel
             )
+            detailsScreenNavigation(navController)
         }
     }
 }

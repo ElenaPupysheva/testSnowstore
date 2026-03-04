@@ -8,6 +8,7 @@ import com.alonso.testsnowstore.data.ENGLISH_LANGUAGE
 import com.alonso.testsnowstore.data.SHOPITEM_PREFERENCES
 import com.alonso.testsnowstore.data.SWITCH_KEY
 import com.alonso.testsnowstore.di.databaseModule
+import com.alonso.testsnowstore.di.detailedModule
 import com.alonso.testsnowstore.di.favouriteModule
 import com.alonso.testsnowstore.di.mainModule
 import com.alonso.testsnowstore.di.networkModule
@@ -33,7 +34,8 @@ class App : Application() {
                     mainModule,
                     databaseModule,
                     settingsModule,
-                    favouriteModule
+                    favouriteModule,
+                    detailedModule
                 )
             )
         }

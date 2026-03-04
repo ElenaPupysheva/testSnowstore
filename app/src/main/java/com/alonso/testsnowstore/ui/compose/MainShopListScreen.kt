@@ -56,8 +56,7 @@ fun MainShopListScreen(
             shopItemsList = uiState.items,
             onLoadNextPage = viewModel::loadNextPage,
             onItemClick = { item ->
-                // TODO
-                // navController.navigate("details/${item.id}")
+                navController.navigate("details/${item.id}")
             }
         )
     }

@@ -1,6 +1,5 @@
 package com.alonso.testsnowstore.ui.compose
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,9 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.alonso.testsnowstore.data.ShopItem
 import com.alonso.testsnowstore.ui.theme.PaddingSmall
 import com.alonso.testsnowstore.ui.theme.SpacerThin
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.alonso.testsnowstore.utils.formatDate
 
 @Composable
 fun ItemCard(shopItem: ShopItem, onClick: () -> Unit) {
@@ -31,8 +28,8 @@ fun ItemCard(shopItem: ShopItem, onClick: () -> Unit) {
             .padding(
                 vertical = PaddingSmall,
                 horizontal = PaddingSmall
-            )
-            .clickable { },
+            ),
+        onClick = onClick,
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background,
@@ -45,7 +42,7 @@ fun ItemCard(shopItem: ShopItem, onClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp), // Внутренние отступы
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
@@ -98,13 +95,4 @@ fun ItemCard(shopItem: ShopItem, onClick: () -> Unit) {
     }
 }
 
-fun formatDate(timestamp: Long): String {
-    return try {
-        val date = Date(timestamp * 1000)
-        val format = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
-        format.format(date)
-    } catch (e: Exception) {
-        "Дата неизвестна"
-    }
-}
 

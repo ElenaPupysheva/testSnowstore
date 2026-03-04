@@ -8,7 +8,11 @@ import org.koin.dsl.module
 
 val mainModule = module {
     single<ShopRepository> {
-        ShopRepositoryImpl(api = get())
+        ShopRepositoryImpl(
+            api = get(),
+            pageSize = 20,
+            favouriteDao = get()
+        )
     }
-    viewModel { MainShopViewModel(repository = get<ShopRepository>()) }
+    viewModel { MainShopViewModel(repository = get()) }
 }

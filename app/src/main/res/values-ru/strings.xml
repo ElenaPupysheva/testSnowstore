@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="dark_theme">Темная тема</string>
-    <string name="language_switch">Переключить язык</string>
-    <string name="main_list">Список товаров</string>
+    <string name="language_switch">Изменить язык</string>
+    <string name="main_list">Список продукции</string>
     <string name="screen_favourites">Избранное</string>
     <string name="screen_setting">Настройки</string>
+    <string name="screen_details">Подробнее</string>
+    <string name="back">Назад</string>
 </resources>

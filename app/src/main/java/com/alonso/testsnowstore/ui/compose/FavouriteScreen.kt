@@ -20,9 +20,9 @@ fun FavouriteScreen(
     Column(modifier.fillMaxSize()) {
         ShopList(
             shopItemsList = items,
-            onLoadNextPage = { /* обычно не нужно */ },
+            onLoadNextPage = { },
             onItemClick = { item ->
-                // navController.navigate("details/${item.id}")
+                navController.navigate("details/${item.id}")
             }
         )
     }
