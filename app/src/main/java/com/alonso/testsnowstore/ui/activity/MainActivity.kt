@@ -7,17 +7,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.alonso.testsnowstore.App
-import com.alonso.testsnowstore.ui.compose.NavScreen
+import com.alonso.testsnowstore.ui.compose.RootHost
 import com.alonso.testsnowstore.ui.theme.TestSnowstoreTheme
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,15 +25,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val app = application as App
             val langTag = app.langTag.collectAsStateWithLifecycle().value
-            val navController = rememberNavController()
 
-            val localizedContext = remember(langTag) { withLanguage(this, langTag) }
+            val rootNavController = rememberNavController()
+            val localizedContext = remember(langTag) { withLanguage(baseContext, langTag) }
 
             CompositionLocalProvider(LocalContext provides localizedContext) {
-                key(langTag) {
-                    TestSnowstoreTheme {
-                        NavScreen(navController = navController)
-                    }
+                TestSnowstoreTheme {
+                    RootHost(navController = rootNavController)
                 }
             }
         }

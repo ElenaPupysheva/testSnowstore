@@ -13,14 +13,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.alonso.testsnowstore.R
 import com.alonso.testsnowstore.domain.BottomNavRoutes
 import com.alonso.testsnowstore.presentation.favourite.FavouritesViewModel
@@ -36,38 +35,29 @@ const val ANIMATION_DELAY = 500
 const val ZERO_DELAY = 0
 
 @Composable
-fun NavScreen(
-    navController: NavHostController
-) {
-    val bottomBarRoutes = listOf(
-        BottomBarItem(
-            labelRes = R.string.main_list,
-            route = BottomNavRoutes.Main
-        ),
-        BottomBarItem(
-            labelRes = R.string.screen_favourites,
-            route = BottomNavRoutes.Favourites
-        ),
-        BottomBarItem(
-            labelRes = R.string.screen_setting,
-            route = BottomNavRoutes.Settings
-        )
+fun NavScreen() {
+    val bottomBarItems = listOf(
+        BottomBarItem(labelRes = R.string.main_list, route = BottomNavRoutes.Main),
+        BottomBarItem(labelRes = R.string.screen_favourites, route = BottomNavRoutes.Favourites),
+        BottomBarItem(labelRes = R.string.screen_setting, route = BottomNavRoutes.Settings),
     )
 
     val mainShopViewModel: MainShopViewModel = koinViewModel()
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val favouritesViewModel: FavouritesViewModel = koinViewModel()
-    val bottomNavRoutes = BottomNavRoutes.entries.map { it.name }
-    val showBottomBar = remember { mutableStateOf(true) }
+
+    val navController = rememberNavController()
+
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route
 
-    showBottomBar.value = currentRoute in bottomNavRoutes || currentRoute.isNullOrEmpty()
+    val tabRouteNames = remember { BottomNavRoutes.entries.map { it.name }.toSet() }
+    val showBottomBar = currentRoute in tabRouteNames || currentRoute.isNullOrEmpty()
 
     Scaffold(
         bottomBar = {
             AnimatedVisibility(
-                visible = showBottomBar.value,
+                visible = showBottomBar,
                 enter = slideInVertically(
                     initialOffsetY = { it },
                     animationSpec = tween(durationMillis = ANIMATION_DELAY)
@@ -81,14 +71,17 @@ fun NavScreen(
                     HorizontalDivider()
                     NavigationBar {
                         val currentDestination = backStackEntry?.destination
-                        bottomBarRoutes.forEach { bottomBarRoute ->
+                        bottomBarItems.forEach { item ->
+                            val selected = currentDestination?.route == item.route.name
+
                             NavigationBarItem(
-                                icon = { },
-                                label = { Text(stringResource(bottomBarRoute.labelRes)) },
-                                selected = currentDestination?.route == bottomBarRoute.route.name,
+                                icon = { /* icons позже */ },
+                                label = { Text(stringResource(item.labelRes)) },
+                                selected = selected,
                                 onClick = {
-                                    if (currentDestination?.route == bottomBarRoute.route.name) return@NavigationBarItem
-                                    navController.navigate(bottomBarRoute.route.name) {
+                                    if (selected) return@NavigationBarItem
+
+                                    navController.navigate(item.route.name) {
                                         popUpTo(navController.graph.findStartDestination().id) {
                                             saveState = true
                                         }
@@ -119,6 +112,7 @@ fun NavScreen(
             settingsScreenNavigation(
                 viewModel = settingsViewModel
             )
+
             detailsScreenNavigation(navController)
         }
     }

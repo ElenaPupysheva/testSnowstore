@@ -44,14 +44,14 @@ fun MainShopListScreen(
     val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
     val textFieldState = viewModel.textFieldState
     Column(
-        modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         SimpleSearchBar(
             textFieldState = textFieldState,
             onSearch = viewModel::onSearch,
             searchResults = searchResults,
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = PaddingMedium)
         )
 
@@ -78,7 +78,7 @@ fun SimpleSearchBar(
     var expanded by rememberSaveable { mutableStateOf(false) }
     Box(
         modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .semantics { isTraversalGroup = true }
     ) {
         SearchBar(

@@ -33,7 +33,9 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val app = context.applicationContext as App
 
     val isDarkTheme by viewModel.darkThemeEnabled.observeAsState(initial = app.darkTheme)
-    val isEnglish by viewModel.englishLanguageEnabled.observeAsState(initial = (app.langTag.collectAsState().value == "en"))
+    val isEnglish by viewModel.englishLanguageEnabled.observeAsState(
+        initial = (app.langTag.collectAsState().value == "en")
+    )
 
     LaunchedEffect(isDarkTheme) {
         if (app.darkTheme != isDarkTheme) app.switchTheme(isDarkTheme)
