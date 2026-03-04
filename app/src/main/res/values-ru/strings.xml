@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dark_theme">Темная тема</string>
+    <string name="light_theme">Светлая</string>
+    <string name="theme">Тема</string>
+    <string name="language_title">Язык</string>
+    <string name="language_en">English</string>
+    <string name="language_ru">Русский</string>
+    <string name="language_switch">Изменить язык</string>
+    <string name="main_list">Список продукции</string>
+    <string name="screen_favourites">Избранное</string>
+    <string name="screen_setting">Настройки</string>
+    <string name="screen_details">Подробнее</string>
+    <string name="back">Назад</string>
+    <string name="search">Поиск</string>
+    <string name="filter_all">Отфильтровать все</string>
+</resources>
