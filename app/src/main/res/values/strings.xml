@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name" translatable="false">testSnowstore</string>
     <string name="dark_theme">Dark theme</string>
+    <string name="light_theme">Light</string>
+    <string name="language_title">Language</string>
+    <string name="language_en">English</string>
+    <string name="language_ru">Russian</string>
     <string name="language_switch">Change language</string>
     <string name="main_list">Products` list</string>
     <string name="screen_favourites">Favourites</string>
     <string name="screen_setting">Settings</string>
     <string name="screen_details">Details</string>
     <string name="back">Back</string>
+    <string name="search">Search</string>
 </resources>

@@ -86,4 +86,5 @@ dependencies {
     implementation(libs.moshi.kotlin)
 
     implementation(libs.coil.compose)
+    implementation("androidx.appcompat:appcompat:1.7.0")
 }

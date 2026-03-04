@@ -3,7 +3,6 @@ package com.alonso.testsnowstore
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import com.alonso.testsnowstore.data.ENGLISH_LANGUAGE
 import com.alonso.testsnowstore.data.SHOPITEM_PREFERENCES
 import com.alonso.testsnowstore.data.SWITCH_KEY
@@ -13,13 +12,21 @@ import com.alonso.testsnowstore.di.favouriteModule
 import com.alonso.testsnowstore.di.mainModule
 import com.alonso.testsnowstore.di.networkModule
 import com.alonso.testsnowstore.di.settingsModule
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
 
     private lateinit var prefs: SharedPreferences
-    var darkTheme = false
+
+    var darkTheme: Boolean = false
+        private set
+
+    private val _langTag = MutableStateFlow("ru") // "ru" / "en"
+    val langTag: StateFlow<String> = _langTag.asStateFlow()
 
     override fun onCreate() {
         super.onCreate()
@@ -66,14 +73,7 @@ class App : Application() {
 
     private fun applySavedLanguage() {
         val isEnglish = prefs.getBoolean(ENGLISH_LANGUAGE, false)
-
-        val locales = if (isEnglish) {
-            LocaleListCompat.forLanguageTags("en")
-        } else {
-            LocaleListCompat.forLanguageTags("ru")
-        }
-
-        AppCompatDelegate.setApplicationLocales(locales)
+        _langTag.value = if (isEnglish) "en" else "ru"
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -88,13 +88,6 @@ class App : Application() {
 
     fun switchLanguage(isEnglish: Boolean) {
         prefs.edit().putBoolean(ENGLISH_LANGUAGE, isEnglish).apply()
-
-        val locales = if (isEnglish) {
-            LocaleListCompat.forLanguageTags("en")
-        } else {
-            LocaleListCompat.forLanguageTags("ru")
-        }
-
-        AppCompatDelegate.setApplicationLocales(locales)
+        _langTag.value = if (isEnglish) "en" else "ru"
     }
 }

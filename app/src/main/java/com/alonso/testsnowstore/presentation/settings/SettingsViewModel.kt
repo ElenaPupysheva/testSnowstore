@@ -14,12 +14,16 @@ class SettingsViewModel(
     val englishLanguageEnabled: LiveData<Boolean> get() = _englishLanguageEnabled
     init {
         loadThemeState()
+        loadLanguageState()
     }
     private fun loadThemeState() {
         val isEnabled = settingsInteractor.isDarkThemeEnabled()
         _darkThemeEnabled.postValue(isEnabled)
     }
-
+    private fun loadLanguageState() {
+        val isEnabled = settingsInteractor.isEnglishLanguageEnabled()
+        _englishLanguageEnabled.value = isEnabled
+    }
     fun onThemeToggled(isEnabled: Boolean) {
         settingsInteractor.setDarkThemeEnabled(isEnabled)
         _darkThemeEnabled.value = isEnabled

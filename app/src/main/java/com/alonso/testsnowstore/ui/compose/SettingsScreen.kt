@@ -1,6 +1,5 @@
 package com.alonso.testsnowstore.ui.compose
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,13 +14,15 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.os.LocaleListCompat
 import com.alonso.testsnowstore.App
+import com.alonso.testsnowstore.R
 import com.alonso.testsnowstore.presentation.settings.SettingsViewModel
 import com.alonso.testsnowstore.ui.theme.SpacerThin
 
@@ -30,48 +31,58 @@ import com.alonso.testsnowstore.ui.theme.SpacerThin
 fun SettingsScreen(viewModel: SettingsViewModel) {
     val context = LocalContext.current
     val app = context.applicationContext as App
+
     val isDarkTheme by viewModel.darkThemeEnabled.observeAsState(initial = app.darkTheme)
-    val isEnglish by viewModel.englishLanguageEnabled.observeAsState(initial = false)
+    val isEnglish by viewModel.englishLanguageEnabled.observeAsState(initial = (app.langTag.collectAsState().value == "en"))
+
     LaunchedEffect(isDarkTheme) {
         if (app.darkTheme != isDarkTheme) app.switchTheme(isDarkTheme)
     }
-    LaunchedEffect(isEnglish) {
-        val locales = if (isEnglish) {
-            LocaleListCompat.forLanguageTags("en")
-        } else {
-            LocaleListCompat.forLanguageTags("ru")
-        }
-        AppCompatDelegate.setApplicationLocales(locales)
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
-        Column {
-            Spacer(Modifier.height(SpacerThin))
-        }
+        Spacer(Modifier.height(SpacerThin))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(if (isDarkTheme) "Dark" else "Light")
+            Text(
+                text = if (isDarkTheme) stringResource(R.string.dark_theme)
+                else stringResource(R.string.light_theme)
+            )
             Switch(
                 checked = isDarkTheme,
                 onCheckedChange = viewModel::onThemeToggled
             )
         }
+
         Spacer(Modifier.height(24.dp))
-        Text("Language", style = MaterialTheme.typography.titleMedium)
+
+        Text(
+            text = stringResource(R.string.language_title),
+            style = MaterialTheme.typography.titleMedium
+        )
+
         Spacer(Modifier.height(SpacerThin))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(if (isEnglish) "English" else "Русский")
+            Text(
+                text = if (isEnglish) stringResource(R.string.language_en)
+                else stringResource(R.string.language_ru)
+            )
             Switch(
                 checked = isEnglish,
-                onCheckedChange = viewModel::onLanguageToggled
+                onCheckedChange = { enabled ->
+                    viewModel.onLanguageToggled(enabled)
+                    app.switchLanguage(enabled)
+                }
             )
         }
     }

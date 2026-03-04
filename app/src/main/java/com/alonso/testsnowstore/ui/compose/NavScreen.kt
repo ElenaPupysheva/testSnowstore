@@ -18,9 +18,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.alonso.testsnowstore.R
 import com.alonso.testsnowstore.domain.BottomNavRoutes
 import com.alonso.testsnowstore.presentation.favourite.FavouritesViewModel
@@ -37,23 +37,23 @@ const val ZERO_DELAY = 0
 
 @Composable
 fun NavScreen(
+    navController: NavHostController
 ) {
     val bottomBarRoutes = listOf(
         BottomBarItem(
-            label = stringResource(R.string.main_list),
+            labelRes = R.string.main_list,
             route = BottomNavRoutes.Main
         ),
         BottomBarItem(
-            label = stringResource(R.string.screen_favourites),
+            labelRes = R.string.screen_favourites,
             route = BottomNavRoutes.Favourites
         ),
         BottomBarItem(
-            label = stringResource(R.string.screen_setting),
+            labelRes = R.string.screen_setting,
             route = BottomNavRoutes.Settings
         )
     )
 
-    val navController = rememberNavController()
     val mainShopViewModel: MainShopViewModel = koinViewModel()
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val favouritesViewModel: FavouritesViewModel = koinViewModel()
@@ -84,7 +84,7 @@ fun NavScreen(
                         bottomBarRoutes.forEach { bottomBarRoute ->
                             NavigationBarItem(
                                 icon = { },
-                                label = { Text(bottomBarRoute.label) },
+                                label = { Text(stringResource(bottomBarRoute.labelRes)) },
                                 selected = currentDestination?.route == bottomBarRoute.route.name,
                                 onClick = {
                                     if (currentDestination?.route == bottomBarRoute.route.name) return@NavigationBarItem
@@ -125,6 +125,6 @@ fun NavScreen(
 }
 
 data class BottomBarItem(
-    val label: String,
+    val labelRes: Int,
     val route: BottomNavRoutes
 )

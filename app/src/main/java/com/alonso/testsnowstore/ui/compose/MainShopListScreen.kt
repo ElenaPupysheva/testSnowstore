@@ -1,6 +1,7 @@
 package com.alonso.testsnowstore.ui.compose
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,11 +21,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.alonso.testsnowstore.R
 import com.alonso.testsnowstore.presentation.main.MainShopViewModel
 import com.alonso.testsnowstore.ui.theme.PaddingMedium
 import com.alonso.testsnowstore.ui.theme.SpacerThin
@@ -37,16 +42,16 @@ fun MainShopListScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchResults by viewModel.searchResults.collectAsStateWithLifecycle()
-
     val textFieldState = viewModel.textFieldState
-
-    Column(modifier.fillMaxSize()) {
+    Column(
+        modifier
+            .fillMaxSize()
+    ) {
         SimpleSearchBar(
             textFieldState = textFieldState,
             onSearch = viewModel::onSearch,
             searchResults = searchResults,
             modifier = Modifier
-                .fillMaxWidth()
                 .padding(horizontal = PaddingMedium)
         )
 
@@ -71,9 +76,15 @@ fun SimpleSearchBar(
     modifier: Modifier = Modifier
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
-
-    SearchBar(
-        modifier = modifier.semantics { traversalIndex = 0f },
+    Box(
+        modifier
+            .fillMaxSize()
+            .semantics { isTraversalGroup = true }
+    ) {
+        SearchBar(
+            modifier = modifier
+                .align(Alignment.TopCenter)
+                .semantics { traversalIndex = 0f },
         inputField = {
             SearchBarDefaults.InputField(
                 query = textFieldState.text.toString(),
@@ -84,13 +95,17 @@ fun SimpleSearchBar(
                 },
                 expanded = expanded,
                 onExpandedChange = { expanded = it },
-                placeholder = { Text("Search") }
+                placeholder = { Text(stringResource(R.string.search)) }
             )
         },
         expanded = expanded,
         onExpandedChange = { expanded = it },
     ) {
-        Column(Modifier.verticalScroll(rememberScrollState())) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
             searchResults.forEach { result ->
                 ListItem(
                     headlineContent = { Text(result) },
@@ -98,10 +113,12 @@ fun SimpleSearchBar(
                         .fillMaxWidth()
                         .clickable {
                             textFieldState.edit { replace(0, length, result) }
+                            onSearch(result)
                             expanded = false
                         }
                 )
             }
         }
+    }
     }
 }
