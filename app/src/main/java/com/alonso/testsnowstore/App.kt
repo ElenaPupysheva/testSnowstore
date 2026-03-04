@@ -3,6 +3,7 @@ package com.alonso.testsnowstore
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import com.alonso.testsnowstore.data.ENGLISH_LANGUAGE
 import com.alonso.testsnowstore.data.SHOPITEM_PREFERENCES
 import com.alonso.testsnowstore.data.SWITCH_KEY
@@ -25,7 +26,8 @@ class App : Application() {
 
     var darkTheme: Boolean = false
         private set
-
+    private val _darkThemeFlow = MutableStateFlow(false)
+    val darkThemeFlow: StateFlow<Boolean> = _darkThemeFlow.asStateFlow()
     private val _langTag = MutableStateFlow("ru")
     val langTag: StateFlow<String> = _langTag.asStateFlow()
 
@@ -60,12 +62,14 @@ class App : Application() {
                 (resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
                         android.content.res.Configuration.UI_MODE_NIGHT_YES
 
-            prefs.edit().putBoolean(SWITCH_KEY, isSystemDarkTheme).apply()
+            prefs.edit { putBoolean(SWITCH_KEY, isSystemDarkTheme) }
         }
     }
 
     private fun applySavedTheme() {
         darkTheme = prefs.getBoolean(SWITCH_KEY, false)
+        _darkThemeFlow.value = darkTheme
+
         AppCompatDelegate.setDefaultNightMode(
             if (darkTheme) AppCompatDelegate.MODE_NIGHT_YES
             else AppCompatDelegate.MODE_NIGHT_NO
@@ -79,7 +83,8 @@ class App : Application() {
 
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
-        prefs.edit().putBoolean(SWITCH_KEY, darkThemeEnabled).apply()
+        _darkThemeFlow.value = darkThemeEnabled
+        prefs.edit { putBoolean(SWITCH_KEY, darkThemeEnabled) }
 
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) AppCompatDelegate.MODE_NIGHT_YES
@@ -89,7 +94,7 @@ class App : Application() {
 
     fun switchLanguage(isEnglish: Boolean) {
         val tag = if (isEnglish) "en" else "ru"
-        prefs.edit().putBoolean(ENGLISH_LANGUAGE, isEnglish).apply()
+        prefs.edit { putBoolean(ENGLISH_LANGUAGE, isEnglish) }
         _langTag.value = tag
     }
 }

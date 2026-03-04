@@ -25,12 +25,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             val app = application as App
             val langTag = app.langTag.collectAsStateWithLifecycle().value
-
+            val darkTheme = app.darkThemeFlow.collectAsStateWithLifecycle().value
             val rootNavController = rememberNavController()
             val localizedContext = remember(langTag) { withLanguage(baseContext, langTag) }
 
             CompositionLocalProvider(LocalContext provides localizedContext) {
-                TestSnowstoreTheme {
+                TestSnowstoreTheme(darkTheme = darkTheme) {
                     RootHost(navController = rootNavController)
                 }
             }

@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -36,18 +35,16 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     val isEnglish by viewModel.englishLanguageEnabled.observeAsState(
         initial = (app.langTag.collectAsState().value == "en")
     )
-
-    LaunchedEffect(isDarkTheme) {
-        if (app.darkTheme != isDarkTheme) app.switchTheme(isDarkTheme)
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
     ) {
         Spacer(Modifier.height(SpacerThin))
-
+        Text(
+            text = stringResource(R.string.theme),
+            style = MaterialTheme.typography.titleMedium
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -58,7 +55,10 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
             )
             Switch(
                 checked = isDarkTheme,
-                onCheckedChange = viewModel::onThemeToggled
+                onCheckedChange = { enabled ->
+                    viewModel.onThemeToggled(enabled)
+                    app.switchTheme(enabled)
+                }
             )
         }
 
